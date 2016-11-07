@@ -1,0 +1,285 @@
+﻿<html>
+<head>
+    <link href="../../Content/bootstrap-3.3.1-dist/css/bootstrap.min.css" rel="stylesheet"
+        type="text/css" />
+    <script src="../../Content/bootstrap-3.3.1-dist/js/bootstrap.js" type="text/javascript"></script>
+    <script src="../../Content/bootstrap-3.3.1-dist/js/bootstrap.min.js" type="text/javascript"></script>
+</head>
+<body>
+    <div class="row">
+    </div>
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-sm-2">
+        </div>
+        <div class="col-sm-5">
+            <div class="col-sm-4">
+                <label style="color: Red">
+                    NAME :</label>
+            </div>
+            <div class="col-sm-4">
+                <input type="text" id="tex1" class="form-control" placeholder="enter the name" />
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <div class="col-sm-4">
+                <label style="color: Red">
+                    AGE :<span class="label label-primary">Same</span>
+                    <input type="checkbox" id="check" /></label>
+            </div>
+            <div class="col-sm-4">
+                <input type="text" id="tex2" class="form-control" place-holder="enter the age" />
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-sm-2">
+        </div>
+        <div class="col-sm-5">
+            <div class="col-sm-4">
+                <label style="color: Red">
+                    ID :</label>
+            </div>
+            <div class="col-sm-4">
+                <input type="text" id="tex3" class="form-control" placeholder="enter the id" />
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <div class="col-sm-4">
+                <label style="color: Red">
+                    PLACE :</label>
+            </div>
+            <div class="col-sm-4">
+                <input type="text" id="tex4" class="form-control" placeholder="enter the place" />
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-sm-2">
+        </div>
+        <div class="col-sm-5">
+            <div class="col-sm-4">
+                <label style="color: Red">
+                    COUNTRY :</label>
+            </div>
+            <div class="col-sm-4">
+                @Html.DropDownList("country", (IEnumerable<SelectListItem>)ViewBag.list, "--select--", new { id = "tex5", @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <div class="col-sm-8">
+                <input type="button" id="text4" class="btn btn-success" value="ADDS" />
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+    <table id="mydatatable" class="diplay" style="border: 1px; margin: 2px; border-color: Red">
+        <thead>
+            <tr>
+                <td>
+                    NAME
+                </td>
+                <td>
+                    AGE
+                </td>
+                <td>
+                    ID
+                </td>
+                <td>
+                    PLACE
+                </td>
+                <td>
+                    COUNTRY
+                </td>
+                <td>
+                    Delete
+                </td>
+            </tr>
+        </thead>
+        <tbody align="center">
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-sm-6">
+        </div>
+        <div class="col-sm-6">
+            <div class="col-sm-4">
+            </div>
+            <div class="col-sm-6">
+                <input type="button" id="text5" class="btn btn-success" value="SAVE" />
+                <input type="button" id="text6" class="btn btn-info" value="CANCEL" />
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+</body>
+</html>
+<link href="../../Content/DataTables-1.9.4/media/css/jquery.dataTables.css" rel="stylesheet"
+    type="text/css" />
+<script src="../../Content/DataTables-1.9.4/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="../../Content/DataTables-1.9.4/media/js/jquery.dataTables.js" type="text/javascript"></script>
+<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script type="text/javascript">
+
+    $("#tex2").datepicker({
+        pattern: 'mmmm yyyy'
+    });
+
+
+    $("#mydatatable").dataTable({
+        "sAjaxSource": "../own/mygrid",
+        "bDestroy": true,
+        "aoColumns":
+         [
+
+                        { "sName": "" },
+                        { "sName": "" },
+                        { "sName": "" },
+                        { "sName": "" },
+                        { "sName": "" },
+                        { "sName": "" }
+                        ]
+
+    });
+    $("#text4").click(function () {
+
+
+        var name = $("#tex1").val();
+
+        var age = $("#tex2").val();
+
+        var id = $("#tex3 ").val();
+
+        var place = $("#tex4").val();
+
+        var country = $("#tex5 option:selected").text();
+
+        $('#mydatatable').dataTable().fnAddData([name, age, id, place, country, '<input type="image" href="#" src="../Content/trash_open.png"  class="delete" id="delete" style="height:25px;width:25px;"/>']);
+
+        $("#tex1").val("");
+        $("#tex2").val("");
+        $("#tex3").val("");
+        $("#tex4").val("");
+        $("#tex5").val("");
+    });
+
+
+
+
+    $('#mydatatable').click('input#delete', function () {
+        alert('hai');
+        debugger;
+
+
+        var nRow1 = $('input#delete').parents('tr')[0];
+
+
+        var oTable1 = $('#mydatatable').dataTable();
+        var iPos1 = oTable1.fnGetPosition(nRow1);
+
+        var aData1 = oTable1.fnGetData(iPos1);
+
+        oTable1.fnDeleteRow(iPos1);
+
+        alert("Item Removed");
+    });
+
+
+
+    $("input#check").bind("click", function (o) {
+        if ($("input#check:checked").length) {
+
+            $("#tex2").val($("#tex1").val());
+
+        }
+        else {
+
+            $("#tex2").prop("disabled", false);
+
+        }
+    });
+
+    $("#text5").click(function () {
+        var table = $('#mydatatable').dataTable().fnGetData();
+        var tbl = [];
+        var objpoint = { "name": "", "age": "", "id": "", "place": "", "country": "" };
+        for (var i = table.length; i--; ) {
+            objpoint.name = table[i][0];
+            objpoint.age = table[i][1];
+            objpoint.id = table[i][2];
+            objpoint.place = table[i][3];
+            objpoint.country = table[i][4];
+            tbl.push(objpoint);
+            var objpoint = { "name": "", "age": "", "id": "", "place": "", "country": "" };
+        }
+
+        alert(objpoint.age);
+        $.ajax({
+            url: '../Default1/save',
+            type: 'post',
+            data: JSON.stringify({ obj1: tbl }),
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function (result) {
+                if (result.success == "1") {
+                    alert(" Record Saved Successfully");
+                    window.location.href = "../Default1/grid"
+                }
+                else {
+                    alert('record not saved');
+                }
+            }
+        });
+    });
+
+    $("#text6").click(function () {
+        window.location.href = "../Default1/grid"
+    });
+
+    $("#tex4").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: '../Default1/auto',
+                dataType: "Json",
+                data: {
+                    searchresult: $("#tex4").val(),
+                    maxResults: 10
+
+                },
+
+                contentType: "application/json;charset=utf-8",
+                success: function (data) {
+                    if (data.length == 0) {
+                        aleet('name is invalid');
+                        $("#tex4").val('');
+
+                    }
+                    else {
+                        alert(data.length);
+                        response(data.slice(0, 10));
+                    }
+                }
+
+            });
+        },
+        minLength: 1,
+        select: hai
+    });
+    function hai(event, ui) {
+        $("#tex4").val(ui.item.place);
+    }
+
+
+   
+
+
+
+</script>
